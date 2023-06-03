@@ -2,3 +2,4 @@ spacy
 textblob
 scikit-learn
 wordcloud
+seaborn
