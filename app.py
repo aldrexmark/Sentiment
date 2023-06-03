@@ -95,189 +95,178 @@ def lemmatize_text(text):
 # Manually define stopwords
 stopwords_list = ['the', 'a', 'an', 'and', 'in', 'on', 'at', 'for', 'to', 'of', 'with']
 
-# Add a space to create some separation
-st.write("")
+df = pd.read_csv('sentiments.csv')
 
-# Align the "Load Dataset" button in the middle
-col1, col2, col3 = st.beta_columns(3)
-with col1:
-    st.write("")
-with col2:
-    st.write("")
-with col3:
-    if st.button('Load Dataset'): 
-        df = pd.read_csv('sentiments.csv')
+# Remember this very useful function to randomly rearrange the dataset
+train = shuffle(df)
 
-        # Remember this very useful function to randomly rearrange the dataset
-        train = shuffle(df)
-
-        st.write('There were 20 responses, and we display them in the table below.')
-        st.dataframe(train, use_container_width=True)
+st.write('There were 20 responses, and we display them in the table below.')
+st.dataframe(train, use_container_width=True)
 
 
-        st.write('There were 23 responses and we display them in the table below.')
-        st.dataframe(train, use_container_width=True)
+st.write('There were 23 responses and we display them in the table below.')
+st.dataframe(train, use_container_width=True)
 
-        st.write('Dataset shape: ')
-        st.text(df.shape)
+st.write('Dataset shape: ')
+st.text(df.shape)
 
-        st.write('Checking for null values. Do not proceed if we find a null value.')
-        st.write(train.isnull().sum())
+st.write('Checking for null values. Do not proceed if we find a null value.')
+st.write(train.isnull().sum())
 
-        st.write('We begin pre-processing the data.  The steps are necessary to clean up \
-        the dataset and achieve better results from the classifier. Some steps are \
-        resource-heavy so be patient and check the animated "running" indicator \
-        at the upper right is showing that the page is still alive and running.')
+st.write('We begin pre-processing the data.  The steps are necessary to clean up \
+the dataset and achieve better results from the classifier. Some steps are \
+resource-heavy so be patient and check the animated "running" indicator \
+at the upper right is showing that the page is still alive and running.')
 
-        st.text('Doing pre-processing tasks...')
-        st.text('Removing symbols...')
-        train.replace(r'^\s*$', np.nan, regex=True, inplace=True)
-        train.dropna(axis=0, how='any', inplace=True)
+st.text('Doing pre-processing tasks...')
+st.text('Removing symbols...')
+train.replace(r'^\s*$', np.nan, regex=True, inplace=True)
+train.dropna(axis=0, how='any', inplace=True)
 
-        st.text('Removing escape sequences...')
-        train.replace(to_replace=[r"\\t|\\n|\\r", "\t|\n|\r"], value=["",""], regex=True, inplace=True)
+st.text('Removing escape sequences...')
+train.replace(to_replace=[r"\\t|\\n|\\r", "\t|\n|\r"], value=["",""], regex=True, inplace=True)
 
-        st.text('Removing non ascii data...')
-        train['text']=train['text'].str.encode('ascii', 'ignore').str.decode('ascii')
+st.text('Removing non ascii data...')
+train['text']=train['text'].str.encode('ascii', 'ignore').str.decode('ascii')
 
-        st.write('Removing punctuations...')
-        train['text']=train['text'].apply(remove_punctuations)
+st.write('Removing punctuations...')
+train['text']=train['text'].apply(remove_punctuations)
 
-        st.write('In Natural Language Processing (NLP), stopwords refer to commonly \
-        occurring words in a language that are often filtered out from the text before \
-        processing. These words typically do not contribute much to the meaning of a \
-        sentence and are used primarily to connect other words together. \nExamples of \
-        stopwords in the English language include "the," "a," "an," "and," "in," "on," \
-        "at," "for," "to," "of," "with," and so on.')
+st.write('In Natural Language Processing (NLP), stopwords refer to commonly \
+occurring words in a language that are often filtered out from the text before \
+processing. These words typically do not contribute much to the meaning of a \
+sentence and are used primarily to connect other words together. \nExamples of \
+stopwords in the English language include "the," "a," "an," "and," "in," "on," \
+"at," "for," "to," "of," "with," and so on.')
 
-        st.write('Removing stop words...')
-        train['text']=train['text'].apply(custom_remove_stopwords)
+st.write('Removing stop words...')
+train['text']=train['text'].apply(custom_remove_stopwords)
 
-        st.write('Removing special characters...')
-        train['text']=train['text'].apply(remove_special_characters)
+st.write('Removing special characters...')
+train['text']=train['text'].apply(remove_special_characters)
 
-        st.write('Removing HTML...')
-        train['text']=train['text'].apply(remove_html)
+st.write('Removing HTML...')
+train['text']=train['text'].apply(remove_html)
 
-        st.write('Removing URL...')
-        train['text']=train['text'].apply(remove_URL)    
+st.write('Removing URL...')
+train['text']=train['text'].apply(remove_URL)    
 
-        st.write('Removing numbers...')
-        train['text']=train['text'].apply(remove_numbers) 
+st.write('Removing numbers...')
+train['text']=train['text'].apply(remove_numbers) 
 
-        st.text('We look at our dataset after more pre-processing steps')
-        st.write(train.head(50))    
+st.text('We look at our dataset after more pre-processing steps')
+st.write(train.head(50))    
 
-        st.write('Removing alpha numeric data...')
-        train['text']=train['text'].apply(remove_alphanumeric)
-        st.text('We look at our dataset after the pre-processing steps')
-        st.write(train.head(50))
+st.write('Removing alpha numeric data...')
+train['text']=train['text'].apply(remove_alphanumeric)
+st.text('We look at our dataset after the pre-processing steps')
+st.write(train.head(50))
 
-        st.write('We lemmatize the words. \
-                  \nThis process could take up to several minutes to complete. Please wait....')
+st.write('We lemmatize the words. \
+          \nThis process could take up to several minutes to complete. Please wait....')
 
-        train['text']=train['text'].apply(lemmatize_text)
+train['text']=train['text'].apply(lemmatize_text)
 
-        #We use the TextBlob tweet sentiment function to get the sentiment
-        train['sentiment']=train['text'].apply(lambda tweet: TextBlob(tweet).sentiment)
+#We use the TextBlob tweet sentiment function to get the sentiment
+train['sentiment']=train['text'].apply(lambda tweet: TextBlob(tweet).sentiment)
 
-        st.write('We look at our dataset after more pre-processing steps')
-        st.dataframe(train, use_container_width=True)
+st.write('We look at our dataset after more pre-processing steps')
+st.dataframe(train, use_container_width=True)
 
-        sentiment_series=train['sentiment'].tolist()
-        columns = ['polarity', 'subjectivity']
-        df1 = pd.DataFrame(sentiment_series, columns=columns, index=train.index)
-        result = pd.concat([train, df1], axis=1)
-        result.drop(['sentiment'],axis=1, inplace=True)
+sentiment_series=train['sentiment'].tolist()
+columns = ['polarity', 'subjectivity']
+df1 = pd.DataFrame(sentiment_series, columns=columns, index=train.index)
+result = pd.concat([train, df1], axis=1)
+result.drop(['sentiment'],axis=1, inplace=True)
 
-        result.loc[result['polarity']>=0.1, 'Sentiment'] = "Positive"
-        result.loc[result['polarity']<0.1, 'Sentiment'] = "Negative"
+result.loc[result['polarity']>=0.1, 'Sentiment'] = "Positive"
+result.loc[result['polarity']<0.1, 'Sentiment'] = "Negative"
 
-        result.loc[result['label']=="1", 'Sentiment_label'] = 1
-        result.loc[result['label']=="0", 'Sentiment_label'] = 0
-        result.drop(['label'],axis=1, inplace=True)
+result.loc[result['label']=="1", 'Sentiment_label'] = 1
+result.loc[result['label']=="0", 'Sentiment_label'] = 0
+result.drop(['label'],axis=1, inplace=True)
 
-        st.write('We view the dataset after the sentiment labels are updated.')
-        result = result.sort_values(by=['Sentiment'], ascending=False)
-        st.dataframe(result, use_container_width=True)
+st.write('We view the dataset after the sentiment labels are updated.')
+result = result.sort_values(by=['Sentiment'], ascending=False)
+st.dataframe(result, use_container_width=True)
 
-        counts = result['Sentiment'].value_counts()
-        st.write(counts)
+counts = result['Sentiment'].value_counts()
+st.write(counts)
 
-        #reads the sample count from the previous line
-        labels = ['Negative','Positive']
-        sizes = [counts[0], counts[1]]
-        custom_colours = ['#ff7675', '#74b9ff']
+#reads the sample count from the previous line
+labels = ['Negative','Positive']
+sizes = [counts[0], counts[1]]
+custom_colours = ['#ff7675', '#74b9ff']
 
-        fig = plt.figure(figsize=(8, 3), dpi=100)
-        plt.subplot(1, 2, 1)
-        plt.pie(sizes, labels = labels, textprops={'fontsize': 10}, startangle=140, \
-                autopct='%1.0f%%', colors=custom_colours, explode=[0, 0.05])
-        plt.subplot(1, 2, 2)
-        sns.barplot(x = labels, y = sizes, \
-                palette= 'viridis')
-        st.pyplot(fig)
+fig = plt.figure(figsize=(8, 3), dpi=100)
+plt.subplot(1, 2, 1)
+plt.pie(sizes, labels = labels, textprops={'fontsize': 10}, startangle=140, \
+        autopct='%1.0f%%', colors=custom_colours, explode=[0, 0.05])
+plt.subplot(1, 2, 2)
+sns.barplot(x = labels, y = sizes, \
+        palette= 'viridis')
+st.pyplot(fig)
 
-        st.subheader('Negative Sentiment')
+st.subheader('Negative Sentiment')
 
-        st.write('Display the word cloud of the negative sentiment')
+st.write('Display the word cloud of the negative sentiment')
 
-        text = " ".join(result[result['Sentiment'] == 'Negative']['text'])
-        fig = plt.figure(figsize = (8, 4))
-        wordcloud = WordCloud(max_words=500, height= 800, width = 1500,  \
-                              background_color="black", colormap= 'viridis').generate(text)
-        plt.imshow(wordcloud, interpolation='bilinear')
-        plt.axis('off')
-        st.pyplot(fig)
+text = " ".join(result[result['Sentiment'] == 'Negative']['text'])
+fig = plt.figure(figsize = (8, 4))
+wordcloud = WordCloud(max_words=500, height= 800, width = 1500,  \
+                      background_color="black", colormap= 'viridis').generate(text)
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis('off')
+st.pyplot(fig)
 
-        all_nodep_words = []
-        for sentence in result[result['Sentiment'] == 'Negative']['text'].to_list():
-            for word in sentence.split():
-               all_nodep_words.append(word)
+all_nodep_words = []
+for sentence in result[result['Sentiment'] == 'Negative']['text'].to_list():
+    for word in sentence.split():
+       all_nodep_words.append(word)
 
-        df = pd.DataFrame(Counter(all_nodep_words).most_common(25), columns= ['Word', 'Frequency'])
+df = pd.DataFrame(Counter(all_nodep_words).most_common(25), columns= ['Word', 'Frequency'])
 
-        sns.set_context('notebook', font_scale= 1)
-        fig = plt.figure(figsize=(8,4))
-        sns.barplot(y = df['Word'], x= df['Frequency'], palette= 'summer')
-        plt.title("Most Commonly Used Words of the Negative Sentiment")
-        plt.xlabel("Frequency")
-        plt.ylabel("Words")
-        st.pyplot(fig)
+sns.set_context('notebook', font_scale= 1)
+fig = plt.figure(figsize=(8,4))
+sns.barplot(y = df['Word'], x= df['Frequency'], palette= 'summer')
+plt.title("Most Commonly Used Words of the Negative Sentiment")
+plt.xlabel("Frequency")
+plt.ylabel("Words")
+st.pyplot(fig)
 
 
-        st.subheader('Positive Sentiment')
+st.subheader('Positive Sentiment')
 
-        st.write('Display the word cloud of the positive sentiment')
+st.write('Display the word cloud of the positive sentiment')
 
-        text = " ".join(result[result['Sentiment'] == 'Positive']['text'])
-        fig = plt.figure(figsize = (8, 4))
-        wordcloud = WordCloud(max_words=500, height= 800, width = 1500,  \
-                              background_color="black", colormap= 'viridis').generate(text)
-        plt.imshow(wordcloud, interpolation='bilinear')
-        plt.axis('off')
-        st.pyplot(fig)
+text = " ".join(result[result['Sentiment'] == 'Positive']['text'])
+fig = plt.figure(figsize = (8, 4))
+wordcloud = WordCloud(max_words=500, height= 800, width = 1500,  \
+                      background_color="black", colormap= 'viridis').generate(text)
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis('off')
+st.pyplot(fig)
 
-        all_nodep_words = []
-        for sentence in result[result['Sentiment'] == 'Positive']['text'].to_list():
-            for word in sentence.split():
-               all_nodep_words.append(word)
+all_nodep_words = []
+for sentence in result[result['Sentiment'] == 'Positive']['text'].to_list():
+    for word in sentence.split():
+       all_nodep_words.append(word)
 
-        df = pd.DataFrame(Counter(all_nodep_words).most_common(25), columns= ['Word', 'Frequency'])
+df = pd.DataFrame(Counter(all_nodep_words).most_common(25), columns= ['Word', 'Frequency'])
 
-        sns.set_context('notebook', font_scale= 1)
-        fig = plt.figure(figsize=(8,4))
-        sns.barplot(y = df['Word'], x= df['Frequency'], palette= 'summer')
-        plt.title("Most Commonly Used Words of the Positive Sentiment")
-        plt.xlabel("Frequency")
-        plt.ylabel("Words")
-        st.pyplot(fig)
+sns.set_context('notebook', font_scale= 1)
+fig = plt.figure(figsize=(8,4))
+sns.barplot(y = df['Word'], x= df['Frequency'], palette= 'summer')
+plt.title("Most Commonly Used Words of the Positive Sentiment")
+plt.xlabel("Frequency")
+plt.ylabel("Words")
+st.pyplot(fig)
 
-        # Save the dataframe to a CSV file
-        csv = df.to_csv(index=False)
-        if csv:
-            b64 = base64.b64encode(csv.encode()).decode()  # Convert to base64
-            href = f'<a href="data:file/csv;base64,{b64}" download="data.csv">Download CSV file</a>'
-            st.markdown(href, unsafe_allow_html=True)
-        else:
-            st.write("Error: Unable to generate CSV file.")
+# Save the dataframe to a CSV file
+csv = df.to_csv(index=False)
+if csv:
+    b64 = base64.b64encode(csv.encode()).decode()  # Convert to base64
+    href = f'<a href="data:file/csv;base64,{b64}" download="data.csv">Download CSV file</a>'
+    st.markdown(href, unsafe_allow_html=True)
+else:
+    st.write("Error: Unable to generate CSV file.")
