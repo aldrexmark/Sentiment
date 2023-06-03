@@ -36,10 +36,9 @@ with col3:
     if st.button('Load Dataset'):
         # Code for loading the dataset
 
-
 # Download the stopwords if you haven't done it already
-    import nltk
-    nltk.download('stopwords')
+import nltk
+nltk.download('stopwords')
 
 # Create a tokenizer
 tokenizer = nltk.tokenize.RegexpTokenizer(r'\w+')
