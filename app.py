@@ -23,19 +23,6 @@ st.markdown("<p style='text-align: center; font-size: 16px;'>Survey: Do you beli
 # Add the subtitle "Aldrex Mark Tingatinga BSCS 3 - A"
 st.markdown("<h6 style='text-align: center;'>Aldrex Mark Tingatinga BSCS 3 - A</h6>", unsafe_allow_html=True)
 
-# Add a space to create some separation
-st.write("")
-
-# Align the "Load Dataset" button in the middle
-col1, col2, col3 = st.beta_columns(3)
-with col1:
-    st.write("")
-with col2:
-    st.write("")
-with col3:
-    if st.button('Load Dataset'):
-        # Code for loading the dataset
-
 # Download the stopwords if you haven't done it already
 import nltk
 nltk.download('stopwords')
@@ -108,7 +95,17 @@ def lemmatize_text(text):
 # Manually define stopwords
 stopwords_list = ['the', 'a', 'an', 'and', 'in', 'on', 'at', 'for', 'to', 'of', 'with']
 
-if st.button('Load Dataset'):  
+# Add a space to create some separation
+st.write("")
+
+# Align the "Load Dataset" button in the middle
+col1, col2, col3 = st.beta_columns(3)
+with col1:
+    st.write("")
+with col2:
+    st.write("")
+with col3:
+    if st.button('Load Dataset'): 
     df = pd.read_csv('sentiments.csv')
 
     # Remember this very useful function to randomly rearrange the dataset
