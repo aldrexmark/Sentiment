@@ -38,7 +38,8 @@ with col3:
 
 
 # Download the stopwords if you haven't done it already
-nltk.download('stopwords')
+    import nltk
+    nltk.download('stopwords')
 
 # Create a tokenizer
 tokenizer = nltk.tokenize.RegexpTokenizer(r'\w+')
