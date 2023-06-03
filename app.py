@@ -38,7 +38,6 @@ with col3:
 
 
 # Download the stopwords if you haven't done it already
-import nltk
 nltk.download('stopwords')
 
 # Create a tokenizer
