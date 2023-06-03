@@ -11,9 +11,19 @@ from collections import Counter
 import seaborn as sns
 import matplotlib.pyplot as plt
 from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+
+# Download the stopwords if you haven't done it already
+import nltk
+nltk.download('stopwords')
+
+# Create a tokenizer
+tokenizer = nltk.tokenize.RegexpTokenizer(r'\w+')
+
+# Load the stopwords
+stopwords_list = stopwords.words('english')
 
 # The following function definitions show the codes needed to perform each task
-
 def custom_remove_stopwords(text, is_lower_case=False):
     tokens = tokenizer.tokenize(text)
     tokens = [token.strip() for token in tokens]
