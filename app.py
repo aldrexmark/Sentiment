@@ -14,6 +14,14 @@ from nltk.corpus import stopwords
 import nltk
 import base64
 
+# Add the large text "Data in a Sentiment Analysis from a Survey"
+st.markdown("<h1 style='text-align: center;'>Data in a Sentiment Analysis from a Survey</h1>", unsafe_allow_html=True)
+
+# Add the smaller text "Survey: Do you believe that there is a causal relationship between playing video games and the development of aggressive or violent tendencies in players? Why?"
+st.markdown("<p style='text-align: center; font-size: 16px;'>Survey: Do you believe that there is a causal relationship between playing video games and the development of aggressive or violent tendencies in players? Why?</p>", unsafe_allow_html=True)
+
+# Add the subtitle "Aldrex Mark Tingatinga BSCS 3 - A"
+st.markdown("<h3 style='text-align: center;'>Aldrex Mark Tingatinga BSCS 3 - A</h3>", unsafe_allow_html=True)
 # Download the stopwords if you haven't done it already
 import nltk
 nltk.download('stopwords')
