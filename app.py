@@ -21,7 +21,22 @@ st.markdown("<h1 style='text-align: center;'>Data in a Sentiment Analysis from a
 st.markdown("<p style='text-align: center; font-size: 16px;'>Survey: Do you believe that there is a causal relationship between playing video games and the development of aggressive or violent tendencies in players? Why?</p>", unsafe_allow_html=True)
 
 # Add the subtitle "Aldrex Mark Tingatinga BSCS 3 - A"
-st.markdown("<h3 style='text-align: center;'>Aldrex Mark Tingatinga BSCS 3 - A</h3>", unsafe_allow_html=True)
+st.markdown("<h6 style='text-align: center;'>Aldrex Mark Tingatinga BSCS 3 - A</h6>", unsafe_allow_html=True)
+
+# Add a space to create some separation
+st.write("")
+
+# Align the "Load Dataset" button in the middle
+col1, col2, col3 = st.beta_columns(3)
+with col1:
+    st.write("")
+with col2:
+    st.write("")
+with col3:
+    if st.button('Load Dataset'):
+        # Code for loading the dataset
+
+
 # Download the stopwords if you haven't done it already
 import nltk
 nltk.download('stopwords')
