@@ -10,6 +10,7 @@ from wordcloud import WordCloud
 from collections import Counter
 import seaborn as sns
 import matplotlib.pyplot as plt
+from nltk.tokenize import word_tokenize
 
 # The following function definitions show the codes needed to perform each task
 
