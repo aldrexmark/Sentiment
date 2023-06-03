@@ -13,12 +13,11 @@ import matplotlib.pyplot as plt
 import nltk
 from nltk.tokenize import word_tokenize
 
-# Download the required tokenizer data (run this once)
-nltk.download('punkt')
+# Download the stopwords (run this once)
+nltk.download('stopwords')
 
-# Define the tokenizer object
-tokenizer = nltk.tokenize.WordPunctTokenizer()
-
+# Define the stopwords list
+stopwords_list = stopwords.words('english')
 
 #The following function definitions show the codes need to perform each task
 def custom_remove_stopwords(text, is_lower_case=False):
