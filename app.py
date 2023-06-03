@@ -10,16 +10,9 @@ from wordcloud import WordCloud
 from collections import Counter
 import seaborn as sns
 import matplotlib.pyplot as plt
-import nltk
-from nltk.tokenize import word_tokenize
 
-# Download the stopwords (run this once)
-nltk.download('stopwords')
+# The following function definitions show the codes needed to perform each task
 
-# Define the stopwords list
-stopwords_list = stopwords.words('english')
-
-#The following function definitions show the codes need to perform each task
 def custom_remove_stopwords(text, is_lower_case=False):
     tokens = tokenizer.tokenize(text)
     tokens = [token.strip() for token in tokens]
@@ -44,12 +37,12 @@ def remove_URL(text):
     return url.sub(r' ', text)
 
 def remove_numbers(text):
-    text =''.join([i for i in text if not i.isdigit()])
+    text = ''.join([i for i in text if not i.isdigit()])
     return text
 
 nlp = []
 if 'en_core_web_sm' in spacy.util.get_installed_models():
-    #disable named entity recognizer to reduce memory usage
+    # Disable named entity recognizer to reduce memory usage
     nlp = spacy.load('en_core_web_sm', disable=['ner'])
 else:
     from spacy.cli import download
@@ -68,9 +61,9 @@ def cleanse(word):
     return word
 
 def remove_alphanumeric(strings):
-    nstrings= [" ".join(filter(None, (cleanse(word) for word in string.split()))) \
-               for string in strings.split()]
-    str1=' '.join(nstrings)
+    nstrings = [" ".join(filter(None, (cleanse(word) for word in string.split()))) \
+                for string in strings.split()]
+    str1 = ' '.join(nstrings)
     return str1
 
 def lemmatize_text(text):
@@ -78,14 +71,20 @@ def lemmatize_text(text):
     text = ' '.join([word.lemma_ if word.lemma_ != '-PRON-' else word.text for word in text])
     return text
 
+# Manually define stopwords
+stopwords_list = ['the', 'a', 'an', 'and', 'in', 'on', 'at', 'for', 'to', 'of', 'with']
+
 if st.button('Load Dataset'):  
     df = pd.read_csv('sentiments.csv')
 
-    #remember this very useful function to randomly rearrange the dataset
+    # Remember this very useful function to randomly rearrange the dataset
     train = shuffle(df)
 
+    st.write('There were 20 responses, and we display them in the table below.')
+    st.dataframe(train, use_container_width=True)
 
-    st.write('There were 20 responses and we display them in the table below.')
+
+    st.write('There were 23 responses and we display them in the table below.')
     st.dataframe(train, use_container_width=True)
 
     st.write('Dataset shape: ')
