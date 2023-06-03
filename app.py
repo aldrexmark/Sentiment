@@ -10,6 +10,14 @@ from wordcloud import WordCloud
 from collections import Counter
 import seaborn as sns
 import matplotlib.pyplot as plt
+import nltk
+from nltk.tokenize import word_tokenize
+
+# Download the required tokenizer data (run this once)
+nltk.download('punkt')
+
+# Define the tokenizer object
+tokenizer = nltk.tokenize.WordPunctTokenizer()
 
 
 #The following function definitions show the codes need to perform each task
