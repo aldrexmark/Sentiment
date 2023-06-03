@@ -10,8 +10,9 @@ from wordcloud import WordCloud
 from collections import Counter
 import seaborn as sns
 import matplotlib.pyplot as plt
-from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+import nltk
+import base64
 
 # Download the stopwords if you haven't done it already
 import nltk
@@ -254,7 +255,7 @@ if st.button('Load Dataset'):
     st.pyplot(fig)
 
     # Save the dataframe to a CSV file
-    csv = result.to_csv(index=False)
+    csv = df.to_csv(index=False)
     if csv:
         b64 = base64.b64encode(csv.encode()).decode()  # Convert to base64
         href = f'<a href="data:file/csv;base64,{b64}" download="data.csv">Download CSV file</a>'
